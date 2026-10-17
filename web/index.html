@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexStream Player - Ativação</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f0f0f; color: #fff; max-width: 500px; margin: 40px auto; padding: 20px; }
+    h1 { text-align: center; }
+    input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; }
+    button { background: #6d28d9; border: none; cursor: pointer; font-weight: bold; }
+    .result { margin-top: 20px; padding: 12px; background: #1a1a1a; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>NexStream Player</h1>
+  <p>Informe o Device ID e Device Key exibidos no aplicativo.</p>
+  <input id="deviceId" placeholder="Device ID (ex: A1:B2:C3:D4:E5:F6)" />
+  <input id="deviceKey" placeholder="Device Key" />
+  <button onclick="checkStatus()">Verificar Status</button>
+  <div id="status" class="result" style="display:none;"></div>
+
+  <h2>Adicionar Playlist</h2>
+  <input id="playlistName" placeholder="Nome da Playlist" />
+  <select id="playlistType" style="width:100%;padding:12px;margin:8px 0;background:#1a1a1a;color:#fff;">
+    <option value="m3u">M3U URL</option>
+    <option value="xtream">Xtream Codes</option>
+  </select>
+  <input id="playlistUrl" placeholder="URL M3U ou Server URL" />
+  <input id="username" placeholder="Username (Xtream)" style="display:none;" />
+  <input id="password" placeholder="Password (Xtream)" style="display:none;" />
+  <button onclick="addPlaylist()">Adicionar Playlist</button>
+  <div id="result" class="result" style="display:none;"></div>
+
+  <script>
+    const API = 'http://localhost:3000';
+
+    document.getElementById('playlistType').addEventListener('change', (e) => {
+      const show = e.target.value === 'xtream';
+      document.getElementById('username').style.display = show ? 'block' : 'none';
+      document.getElementById('password').style.display = show ? 'block' : 'none';
+    });
+
+    async function checkStatus() {
+      const deviceId = document.getElementById('deviceId').value;
+      const res = await fetch(`${API}/devices/status?deviceId=${encodeURIComponent(deviceId)}`);
+      const data = await res.json();
+      const el = document.getElementById('status');
+      el.style.display = 'block';
+      el.textContent = data.active ? 'Dispositivo ativo' : 'Dispositivo pendente ou não encontrado';
+    }
+
+    async function addPlaylist() {
+      const payload = {
+        deviceId: document.getElementById('deviceId').value,
+        deviceKey: document.getElementById('deviceKey').value,
+        name: document.getElementById('playlistName').value,
+        type: document.getElementById('playlistType').value,
+        url: document.getElementById('playlistUrl').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+      const res = await fetch(`${API}/playlists`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      const el = document.getElementById('result');
+      el.style.display = 'block';
+      el.textContent = data.success ? 'Playlist adicionada com sucesso!' : (data.error || 'Erro');
+    }
+  </script>
+</body>
+</html>
