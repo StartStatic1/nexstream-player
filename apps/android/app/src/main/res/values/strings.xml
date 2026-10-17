@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NexStream Player</string>
+    <string name="activation_title">Activate this device</string>
+    <string name="activation_subtitle">Go to the NexStream portal and sign in with the credentials below to add your playlists.</string>
+    <string name="label_device_id">Device ID</string>
+    <string name="label_device_key">Device Key</string>
+    <string name="label_status">Status</string>
+    <string name="action_refresh">Check status</string>
+    <string name="status_connecting">Connecting to server…</string>
+    <string name="status_error">Server unreachable: %1$s</string>
+</resources>
