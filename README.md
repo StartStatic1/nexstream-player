@@ -1,21 +1,51 @@
 # NexStream Player
 
-Premium native Android IPTV/OTT player with device-based activation.
+Premium native Android IPTV/OTT player with original identity and device-based activation.
 
-## Features
-- Native Kotlin + Jetpack Compose (Mobile + Android TV)
-- Device ID (MAC-style) + Device Key activation
-- Playlist management via website (M3U / Xtream Codes)
-- Modern player with Media3/ExoPlayer
-- Favorites, EPG, Continue Watching, Parental Control
+## What is included (current scaffold)
 
-## Structure
-- `apps/android/` - Native Android application
-- `backend/` - API server
-- `web/` - Activation and playlist management site
+- **Android App** (`apps/android/`)
+  - Kotlin + Jetpack Compose
+  - Shows generated Device ID (MAC-style) + Device Key on launch
+  - Prepared for Android TV (LEANBACK_LAUNCHER)
+  - Media3 dependency included
 
-## Status
-Initial scaffold. Development in progress.
+- **Backend API** (`backend/`)
+  - Simple Express server
+  - Endpoints: register device, check status, add/list playlists
+  - In-memory storage (ready to connect to Supabase/PostgreSQL)
 
-## License
-Proprietary - All rights reserved.
+- **Activation Website** (`web/index.html`)
+  - Login with Device ID + Device Key
+  - Add M3U or Xtream Codes playlist
+  - Check device status
+
+## How to run locally
+
+### Backend
+```bash
+cd backend
+npm install
+npm start
+```
+
+### Website
+Open `web/index.html` in browser (points to localhost:3000)
+
+### Android
+Open `apps/android/` in Android Studio and run.
+
+## Next steps (planned)
+
+1. Persist data in Supabase
+2. Full player screens (Live TV, Movies, Series, EPG)
+3. Proper license activation flow with payments
+4. Admin panel
+5. Production deployment on your VPS
+
+## Repository
+https://github.com/StartStatic1/nexstream-player
+
+---
+
+**Status**: Initial working skeleton uploaded. Ready for continued development.
